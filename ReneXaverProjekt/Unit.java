@@ -9,11 +9,20 @@ public class Unit {
   private int zDirection;
   private int zXPosition;
   private int zYPosition;
+  
   public Unit (double pLP, int pATK, int pDEF)
   {
     setLP(pLP);;
     setATK(pATK);
     setDEF(pDEF);
+  }
+  public Unit (double pLP, int pATK, int pDEF, int pDistATK, int pDistDEF)
+  {
+    setLP(pLP);;
+    setATK(pATK);
+    setDEF(pDEF);
+    setDistATK(pDistATK);
+    setDistDEF(pDistDEF);
   }
   //Anfang der get / set Methoden
   public int getMoveEnergy() {
@@ -23,7 +32,7 @@ public class Unit {
   public void setMoveEnergy(int pMoveEnergy) {
     //setzt die Variable "zMoveEnergy" auf "pMoveEnergy"
     zMoveEnergy = pMoveEnergy;
-    }
+  }
   public int getATK() {
     //gibt die Variable "zATK" zurück (Angriffswert der Soldaten)
     return zATK;
@@ -36,7 +45,7 @@ public class Unit {
     //gibt die Variable "zDEF" zurück (Verteidigungswert der Soldaten)
     return zDEF;
   }
-   public void setDEF(int pDEF) {
+  public void setDEF(int pDEF) {
     //setzt die Variable "zDEF" auf "pDEF"
     zDEF = pDEF;
   } 
@@ -44,7 +53,7 @@ public class Unit {
     //gibt die Variable "zDistATK" zurück (z.b. Bogen, Musketen usw Schaden)
     return zDistATK;
   }
-    public void setDistATK(int pDistATK) {
+  public void setDistATK(int pDistATK) {
     //setzt die Variable "zDistATK" auf "pDistATK"
     zDistATK = pDistATK;
   }
@@ -52,7 +61,7 @@ public class Unit {
     //gibt die Variable "zDistDEF" zurück (Fernkampf-Schutz)
     return zDistDEF;
   }
-   public void setDistDEF(int pDistDEF) {
+  public void setDistDEF(int pDistDEF) {
     //setzt die Variable "zDistDEF" auf "pDistDEF"
     zDistDEF = pDistDEF;
   }
