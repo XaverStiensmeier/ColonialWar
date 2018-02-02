@@ -1,7 +1,5 @@
-import java.awt.Color;
-
 import javax.swing.JOptionPane;
-
+import javafx.scene.input.KeyEvent;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +17,7 @@ public class FightTestArena extends Application
   TextArea textarea = new TextArea();
   Button lInFight = new Button();
   Button lDistFight = new Button();
+ 
   public static void main(String [] args) {
     launch();
   }
@@ -61,14 +60,11 @@ public class FightTestArena extends Application
     }
     });
     stage.show();
-    
     lInFight.setOnAction(new EventHandler<ActionEvent>() {
     
     @Override
     public void handle(ActionEvent arg0) {
     textarea.setText("FIGHT\n");
-    
-    
     double lLP1 = Double.parseDouble(JOptionPane.showInputDialog("Leben Unit 1"));
     int   lATK1 = Integer.parseInt(JOptionPane.showInputDialog("ATK von Unit 1"));
     int   lDEF1 = Integer.parseInt(JOptionPane.showInputDialog("DEF von Unit 1"));
@@ -84,9 +80,9 @@ public class FightTestArena extends Application
     
     //zeige die Units an
     textarea.appendText("1");
-    show(lUnit1);
+    textarea.appendText(lUnit1.toString());
     textarea.appendText("\n2");
-    show(lUnit2);
+    textarea.appendText(lUnit2.toString());
     //starte den Fight
     inFight(lUnit1, lUnit2);
     } // end of jButton1_ActionPerformed
@@ -98,7 +94,7 @@ public class FightTestArena extends Application
     public void handle(ActionEvent arg0) {
     textarea.setText("DistFIGHT\n");
     
-    
+    //erstelle Werte für den ersten Fighter
     double lLP1 = Double.parseDouble(JOptionPane.showInputDialog("Leben Unit 1"));
     int   lDistATK1 = Integer.parseInt(JOptionPane.showInputDialog("DistATK von Unit 1"));
     
@@ -112,26 +108,27 @@ public class FightTestArena extends Application
     
     //zeige die Units an
     textarea.appendText("1");
-    show(lUnit1);
+    textarea.appendText(lUnit1.toString());
     textarea.appendText("\n2");
-    show(lUnit2);
+    textarea.appendText(lUnit2.toString());
     //starte den Fight
     distFight(lUnit1, lUnit2);
     } // end of jButton1_ActionPerformed
     });
-  }
-  
-  public void show (Unit pUnit) {
-    // zeige zLP, zATK, zDEF eines Fighters
-    textarea.appendText("\nLeben: " + pUnit.getLP() + ", Angriffsschaden: " + pUnit.getATK() + ", Verteidigung: " + pUnit.getDEF()+ ";");
-  }
-    
+    scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+    @Override
+             public void handle(KeyEvent event) {
+             switch (event.getCode()) {
+             case ESCAPE: Platform.exit(); System.exit(0);      
+    } // end of switch
+    }}); //end of event
+  } 
+      
   public void inFight(Unit pUnit1, Unit pUnit2)
   {
     //solange noch einer Lebt
     while (pUnit1.getLP() >= 1 && pUnit2.getLP() >= 1)
     {
-      
       //hole dir die Lebenswerte 
       double LP1 = pUnit1.getLP();
       double LP2 = pUnit2.getLP();
@@ -154,8 +151,8 @@ public class FightTestArena extends Application
         pUnit1.setLP(LP1 - lMinDamageValue);
       } // end of if
       //am Ende jeder Runde: zeige uns den Zwischen-Stand
-      show(pUnit1);
-      show(pUnit2);
+      textarea.appendText(pUnit1.toString());
+      textarea.appendText(pUnit2.toString());
     } // end of while
     //zeige uns den Gewinner
     if (pUnit1.getLP() > 0) {
@@ -189,10 +186,10 @@ public class FightTestArena extends Application
       pUnit2.setLP(LP2 - ATK1);
     else
     pUnit2.setLP(LP2 - lMinDamageValue);
-    show(pUnit1);
-    show(pUnit2);
+    textarea.appendText(pUnit1.toString());
+    textarea.appendText(pUnit2.toString());
   }
-  
+    
   public void CreateDistUnit_ActionPerformed(ActionEvent evt) {
     textarea.appendText("DistFIGHT\n");
     
@@ -209,13 +206,14 @@ public class FightTestArena extends Application
     Unit lUnit2 = new Unit(lLP2,0,0,0,lDistDEF2);
     
     //zeige die Units an
-    textarea.appendText("1");
-    show(lUnit1);
-    textarea.appendText("\n2");
-    show(lUnit2);
+    textarea.appendText("1\n");
+    textarea.appendText(lUnit1.toString());
+    textarea.appendText("\n2\n");
+    textarea.appendText(lUnit2.toString());
     //starte den Fight
     distFight(lUnit1, lUnit2);   
   } // end of CreateDistUnit_ActionPerformed  
     
 }
+    
   

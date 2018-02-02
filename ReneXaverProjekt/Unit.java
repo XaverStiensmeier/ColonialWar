@@ -9,7 +9,6 @@ public class Unit {
   private int zDirection;
   private int zXPosition;
   private int zYPosition;
-  
   public Unit (double pLP, int pATK, int pDEF)
   {
     setLP(pLP);;
@@ -92,9 +91,17 @@ public class Unit {
   public int getYPosition() {
     //gibt die Variable "zYPosition" zurück.
     return zYPosition;
-  }
+  }                                                                          
   public void setYPosition(int pYPosition) {
     //setzt die Variable "zYPosition" zu "pYPosition"
     zYPosition = pYPosition;
+  }
+  public String toString() {
+    String part1 = "Leben: " + this.zLP + "\nATK: " + this.zATK + "\nDEF: " + this.zDEF;
+    if (this.zATK > 0) {
+      part1 = part1 + "\nDistATK = " + this.zATK;
+    } // end of if
+    part1 = part1 + "\nDistDEF = " + this.zDistDEF + "\nRichtung = " + this.zDirection + "\nPosition (X,Y) = (" + this.getXPosition() + "," + this.getYPosition() + ")";
+    return part1;
   }
 }
