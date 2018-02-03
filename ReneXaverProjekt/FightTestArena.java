@@ -31,13 +31,13 @@ public class FightTestArena extends Application
     
     lInFight.setText("Create Unit");
     lInFight.setPrefSize(128, 8);
-    lInFight.setTranslateX(170);
-    lInFight.setTranslateY(250);
+    //lInFight.setTranslateX(170);
+    //lInFight.setTranslateY(250);
     
     lDistFight.setText("Create DistUnit");
     lDistFight.setPrefSize(128, 8);
-    lDistFight.setTranslateX(170);
-    lDistFight.setTranslateY(250);
+    //lDistFight.setTranslateX(170);
+    //lDistFight.setTranslateY(250);
     
     text.setPrefSize(300, 200);
     text.setTranslateY(0);
@@ -212,8 +212,12 @@ public class FightTestArena extends Application
     textarea.appendText(lUnit2.toString());
     //starte den Fight
     distFight(lUnit1, lUnit2);   
-  } // end of CreateDistUnit_ActionPerformed  
-    
+  } // end of CreateDistUnit_ActionPerformed
+  /*
+  public void turn (Player pPlayer) {
+    List lUnitList = Player.getUnits();
+    }
+    */  
 }
     
   
