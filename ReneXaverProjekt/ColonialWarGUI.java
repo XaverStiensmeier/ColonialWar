@@ -1,11 +1,17 @@
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import javafx.stage.Stage;
@@ -15,14 +21,16 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	private Button zButton;
 	private Group zMyGroup = new Group();
 	private Stage zWindow;
-	
-	//behelfs
+	private Scene zGameScene;
+	private List<Rectangle> zRectangleList = new ArrayList<Rectangle>();
+	// behelfs
 	private Control zMyControl = new Control(this);
-	//funktioniert noch nicht als Client sondern simuliert diesen. Wird später
-	//mit entsprechender Funktionalität ausgestattet.
-	//ColonialWarClient myClient = new ColonialWarClient();
+
+	// funktioniert noch nicht als Client sondern simuliert diesen. Wird später
+	// mit entsprechender Funktionalität ausgestattet.
+	// ColonialWarClient myClient = new ColonialWarClient();
 	public static void main(String[] args) {
-		//behelfs
+		// behelfs
 		launch(args);
 	}
 
@@ -41,6 +49,7 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		zWindow = primaryStage;
+
 	}
 
 	// When zButton is clicked, handle() gets called
@@ -50,11 +59,11 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		if (event.getSource() == zButton) {
 			zMyControl.createMap(10, 10);
 			zMyControl.lineSetUp();
-			//createRectangle(5, 5);
+			// createRectangle(5, 5);
 			zMyControl.createMapView();
-			update();
+			fullUpdate();
 		}
-			
+
 	}
 
 	public void createGrass(int pValueX, int pValueY) {
@@ -64,14 +73,52 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		lRect.setStroke(Color.BLACK);
 		zMyGroup.getChildren().add(lRect);
 	}
-	
-	public void createUnit(int pValueX, int pValueY) {
+
+	public void fullUpdate() {
+		zGameScene = new Scene(zMyGroup, 400, 400);
+		zGameScene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+			if (key.getCode().isDigitKey())
+				zMyControl.getUserInput(key.getCode());
+			else {
+				switch (key.getCode()) {
+				case ESCAPE:
+					System.exit(0);
+					Platform.exit();
+					break;
+				default:
+					System.out.println("Dont be that kid");
+				}
+			}
+		});
+		zWindow.setScene(zGameScene);
+		zMyControl.getNextUnit();
+	}
+ public void moveUnitUpdate(int pOldValueX, int pOldValueY, Unit pUnit) {
+	 createUnitUpdate(pUnit.getXPosition(), pUnit.getYPosition());
+	 removeUnitUpdate(pOldValueX, pOldValueY);
+ }
+	public void createUnitUpdate(int pValueX, int pValueY) {
 		Rectangle lRect = new Rectangle(pValueX + 7.5, pValueY + 7.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);
+		zRectangleList.add(0, lRect);
+		;
 		zMyGroup.getChildren().add(lRect);
 	}
-	public void update() {
-		zWindow.setScene(new Scene(zMyGroup, 400, 400));
+
+	public void removeUnitUpdate(int pValueX, int pValueY) {
+		int foundIndex = findRectangle(pValueX + 7.5, pValueY + 7.5);
+		if (foundIndex >= 0) {
+			zMyGroup.getChildren().remove(foundIndex);
+		} else
+			System.out.print("something is very weird");
+	}
+
+	public int findRectangle(double pX, double pY) {
+		for (int i = 0; i < zRectangleList.size(); i++) {
+			if (pX == ((Rectangle) zRectangleList.get(i)).getX() && pY == ((Rectangle) zRectangleList.get(i)).getY())
+				return i;
+		}
+		return -1;
 	}
 }

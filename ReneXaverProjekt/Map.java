@@ -26,19 +26,24 @@ public class Map {
 		larrayMap[pFromX][pFromY].setSecond(null);
 	}
 
-	public void moveUnit(int pToX, int pToY, Unit pUnit) {
-		if (pUnit != null) {
-			int lFromX = pUnit.getXPosition();
-			int lFromY = pUnit.getYPosition();
-			removeUnit(lFromX, lFromY);
+	public boolean moveUnit(int pToX, int pToY, int pFromX, int pFromY, Unit pUnit) {
+		int lMapLength = larrayMap.length;
+		if (pUnit != null && pToX < lMapLength && pToY < lMapLength) {
+			System.out.println(pFromX + "," + pFromY + ";" + pToX + "," + pToY);
+			removeUnit(pFromX, pFromY);
 			setUnit(pToX, pToY, pUnit);
+			return true;
 		}
+		return false;
 	}
 
 	public Pair[][] getLarrayMap() {
 		return larrayMap;
 	}
 	
+	public Pair getPair(int pLocationX, int pLocationY) {
+		return larrayMap[pLocationX][pLocationY]; 
+	}
 	public int getLarrayMapLength() {
 		return larrayMap.length;
 	}
