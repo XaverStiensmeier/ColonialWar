@@ -17,6 +17,7 @@ public class Map {
 			}
 		}
 	}
+
 	public void setUnit(int pToX, int pToY, Unit pUnit) {
 		if (pUnit != null) {
 			larrayMap[pToX][pToY].setSecond(pUnit);
@@ -31,21 +32,25 @@ public class Map {
 
 	public boolean moveUnit(int pToX, int pToY, int pFromX, int pFromY, Unit pUnit) {
 		int lMapLength = larrayMap.length;
-		if (pUnit != null && pToX < lMapLength && pToY < lMapLength) {
-			removeUnit(pFromX, pFromY);
-			setUnit(pToX, pToY, pUnit);
-			return true;
-		}
+		if (pUnit != null && pToX < lMapLength && pToY < lMapLength && pToX >= 0 && pToY >= 0) {
+				removeUnit(pFromX, pFromY);
+				setUnit(pToX, pToY, pUnit);
+				return true;
+			}
 		return false;
 	}
 
 	public Pair[][] getLarrayMap() {
 		return larrayMap;
 	}
-	
+
 	public Pair getPair(int pLocationX, int pLocationY) {
-		return larrayMap[pLocationX][pLocationY]; 
+		int lMapLength = larrayMap.length;
+		if(pLocationX < lMapLength && pLocationY < lMapLength && pLocationX >= 0 && pLocationY >= 0)
+		return larrayMap[pLocationX][pLocationY];
+		return null;
 	}
+
 	public int getLarrayMapLength() {
 		return larrayMap.length;
 	}

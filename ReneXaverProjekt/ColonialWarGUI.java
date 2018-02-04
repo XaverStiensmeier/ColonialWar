@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
-
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ColonialWarGUI extends Application implements EventHandler<ActionEvent> {
@@ -54,9 +54,10 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	public void handle(ActionEvent event) {
 		if (event.getSource() == zButton) {
 			zMyControl.createMap(10, 10);
+			zMyControl.createMapView(true);
 			zMyControl.lineSetUp();
+			zMyControl.createMapView(false);
 			// createRectangle(5, 5);
-			zMyControl.createMapView();
 			fullUpdate();
 		}
 
@@ -71,8 +72,9 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	}
 
 	public void fullUpdate() {
-		zMyGroup.getChildren().addAll(zMapGroup);
-		zGameScene = new Scene(zMyGroup, 400, 400);
+		Group zRoot = new Group(zMapGroup, zMyGroup);
+		//zMyGroup.getChildren().addAll(zMapGroup);
+		zGameScene = new Scene(zRoot, 400, 400);
 		zGameScene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			if (key.getCode().isDigitKey())
 				zMyControl.getUserInput(key.getCode());
@@ -93,13 +95,14 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	public void reset() {
 		zMyGroup.getChildren().clear();
 	}
-	public void addGrid() {
-		zMyGroup.getChildren().addAll(zMapGroup);
-	}
-	public void createUnitUpdate(int pValueX, int pValueY) {
+
+	public void createUnitUpdate(int pValueX, int pValueY, boolean pIsBackground) {
 		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY  * 30 + 17.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);
+		if(pIsBackground)
+		zMapGroup.getChildren().add(lRect);
+		else
 		zMyGroup.getChildren().add(lRect);
 	}
 }

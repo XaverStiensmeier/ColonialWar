@@ -1,3 +1,4 @@
+import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,6 +20,7 @@ public class Control {
 	Player zCurrentPlayer = zPlayer1;
 	Unit zCurrentUnit;
 	Rectangle test = new Rectangle(5,5,5,5);
+	FightManager zCurrentFightManager = new FightManager();
 	public Control(ColonialWarGUI pCurrentGUI) {
 		zCurrentGUI = pCurrentGUI;
 	}
@@ -27,7 +29,7 @@ public class Control {
 		zCurrentMap = new Map(pMapX, pMapY);
 	}
 
-	public void createMapView() {
+	public void createMapView(boolean pIsBackground) {
 		zCurrentGUI.reset();
 		Pair[][] larrayMap = zCurrentMap.getLarrayMap();
 		for (int x = 0; x < larrayMap.length; x++) {
@@ -38,7 +40,7 @@ public class Control {
 				// behelfslösung
 				zCurrentGUI.createGrass(x * 30 + 10, y * 30 + 10);
 				if (!larrayMap[x][y].isEmpty()) {
-					zCurrentGUI.createUnitUpdate(x, y);
+					zCurrentGUI.createUnitUpdate(x, y, pIsBackground);
 				}
 				// später switch case für verschiedene Landschaften
 
@@ -88,17 +90,24 @@ public class Control {
 	public void move(int pToX, int pToY) {
 		int lOldX = zCurrentUnit.getXPosition();
 		int lOldY = zCurrentUnit.getYPosition();
-		zCurrentUnit.setXPosition(pToX);
-		zCurrentUnit.setYPosition(pToY);
+		Pair zPair = zCurrentMap.getPair(pToX, pToY);
+		if (zPair != null && (zCurrentMap.getPair(pToX, pToY).isEmpty() /* || zCurrentFightManager.inFight(zCurrentMap.getPair(lOldX, lOldY).getSecond(), zPair.getSecond())*/)) {
 		if (zCurrentMap.moveUnit(pToX, pToY, lOldX, lOldY, zCurrentUnit)) {
 			zCurrentUnit.setMoveEnergy(zCurrentUnit.getMoveEnergy() - 1);
+			zCurrentUnit.setXPosition(pToX);
+			zCurrentUnit.setYPosition(pToY);
 		} else {
 			// wenn zCurrentUnit = null oder Zug außerhalb des Spielfelds
 			// wirf eine Fehlermeldung
 		}
+		}
+		else {
+			//zCurrentMap.removeUnit(lOldX, lOldY);
+		}
+			
 		if (zCurrentUnit.getMoveEnergy() == 0)
 			getNextUnit();
-		createMapView();
+		createMapView(false);
 	}
 
 	public Unit getNextUnit() {
