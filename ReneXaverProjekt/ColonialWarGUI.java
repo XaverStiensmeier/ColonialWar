@@ -1,10 +1,6 @@
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.application.Platform;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,9 +16,9 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 
 	private Button zButton;
 	private Group zMyGroup = new Group();
+	private Group zMapGroup = new Group();
 	private Stage zWindow;
 	private Scene zGameScene;
-	private List<Rectangle> zRectangleList = new ArrayList<Rectangle>();
 	// behelfs
 	private Control zMyControl = new Control(this);
 
@@ -71,10 +67,11 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		Rectangle lRect = new Rectangle(pValueX, pValueY, 30, 30);
 		lRect.setFill(Color.TRANSPARENT);
 		lRect.setStroke(Color.BLACK);
-		zMyGroup.getChildren().add(lRect);
+		zMapGroup.getChildren().add(lRect);
 	}
 
 	public void fullUpdate() {
+		zMyGroup.getChildren().addAll(zMapGroup);
 		zGameScene = new Scene(zMyGroup, 400, 400);
 		zGameScene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			if (key.getCode().isDigitKey())
@@ -93,32 +90,16 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		zWindow.setScene(zGameScene);
 		zMyControl.getNextUnit();
 	}
- public void moveUnitUpdate(int pOldValueX, int pOldValueY, Unit pUnit) {
-	 createUnitUpdate(pUnit.getXPosition(), pUnit.getYPosition());
-	 removeUnitUpdate(pOldValueX, pOldValueY);
- }
+	public void reset() {
+		zMyGroup.getChildren().clear();
+	}
+	public void addGrid() {
+		zMyGroup.getChildren().addAll(zMapGroup);
+	}
 	public void createUnitUpdate(int pValueX, int pValueY) {
-		Rectangle lRect = new Rectangle(pValueX + 7.5, pValueY + 7.5, 15, 15);
+		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY  * 30 + 17.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);
-		zRectangleList.add(0, lRect);
-		;
 		zMyGroup.getChildren().add(lRect);
-	}
-
-	public void removeUnitUpdate(int pValueX, int pValueY) {
-		int foundIndex = findRectangle(pValueX + 7.5, pValueY + 7.5);
-		if (foundIndex >= 0) {
-			zMyGroup.getChildren().remove(foundIndex);
-		} else
-			System.out.print("something is very weird");
-	}
-
-	public int findRectangle(double pX, double pY) {
-		for (int i = 0; i < zRectangleList.size(); i++) {
-			if (pX == ((Rectangle) zRectangleList.get(i)).getX() && pY == ((Rectangle) zRectangleList.get(i)).getY())
-				return i;
-		}
-		return -1;
 	}
 }

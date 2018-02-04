@@ -1,3 +1,5 @@
+import javafx.scene.shape.Rectangle;
+
 public class Map {
 	Pair[][] larrayMap;
 
@@ -10,14 +12,15 @@ public class Map {
 
 		for (int i = 0; i < larrayMap.length; i++) {
 			for (int i2 = 0; i2 < larrayMap.length; i2++) {
-				larrayMap[i][i2] = new Pair(0, null);
+				larrayMap[i][i2] = new Pair(0, null, null);
 				// System.out.println(larrayMap[i][i2]);
 			}
 		}
 	}
 	public void setUnit(int pToX, int pToY, Unit pUnit) {
-		if (pUnit != null)
+		if (pUnit != null) {
 			larrayMap[pToX][pToY].setSecond(pUnit);
+		}
 	}
 
 	// eventuell später umschreiben! Man könnte auch die Unit übegeben
@@ -29,7 +32,6 @@ public class Map {
 	public boolean moveUnit(int pToX, int pToY, int pFromX, int pFromY, Unit pUnit) {
 		int lMapLength = larrayMap.length;
 		if (pUnit != null && pToX < lMapLength && pToY < lMapLength) {
-			System.out.println(pFromX + "," + pFromY + ";" + pToX + "," + pToY);
 			removeUnit(pFromX, pFromY);
 			setUnit(pToX, pToY, pUnit);
 			return true;

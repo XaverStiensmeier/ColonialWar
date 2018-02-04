@@ -15,7 +15,15 @@ public class Unit {
     setATK(pATK);
     setDEF(pDEF);
   }
-  public Unit (double pLP, int pATK, int pDEF, int pDistATK, int pDistDEF)
+  public Unit (double pLP, int pATK, int pDEF, int pXPosition, int pYPosition)
+  {
+    setLP(pLP);;
+    setATK(pATK);
+    setDEF(pDEF);
+    setXPosition(pXPosition);
+    setYPosition(pYPosition);
+  }
+  public Unit (double pLP, int pATK, int pDEF, int pDistATK, int pDistDEF, int pXDirection, int pYDirection)
   {
     setLP(pLP);;
     setATK(pATK);
