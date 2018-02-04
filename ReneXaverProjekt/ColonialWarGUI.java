@@ -22,11 +22,10 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	// behelfs
 	private Control zMyControl = new Control(this);
 
-	// funktioniert noch nicht als Client sondern simuliert diesen. Wird später
-	// mit entsprechender Funktionalität ausgestattet.
+	// Einzige auf gabe ist die Visuelle Darstellung der physischen Objekte!
+	// Wird durch den ColonialWarClient angesprochen ~
 	// ColonialWarClient myClient = new ColonialWarClient();
 	public static void main(String[] args) {
-		// behelfs
 		launch(args);
 	}
 
@@ -57,14 +56,13 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 			zMyControl.createMapView(true);
 			zMyControl.lineSetUp();
 			zMyControl.createMapView(false);
-			// createRectangle(5, 5);
 			fullUpdate();
 		}
 
 	}
 
 	public void createGrass(int pValueX, int pValueY) {
-		// erstelle ein Feld
+		// erstelle ein Gras Feld 0 und fügt es der zMapGroup (Background Group);
 		Rectangle lRect = new Rectangle(pValueX, pValueY, 30, 30);
 		lRect.setFill(Color.TRANSPARENT);
 		lRect.setStroke(Color.BLACK);
@@ -72,9 +70,12 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	}
 
 	public void fullUpdate() {
+		//setUp GUI
+		//zMapGroup := Background/Map GUI
+		//zMyGroup  := Die Sicht der Units
 		Group zRoot = new Group(zMapGroup, zMyGroup);
-		//zMyGroup.getChildren().addAll(zMapGroup);
 		zGameScene = new Scene(zRoot, 400, 400);
+		//initialise KeyEvent
 		zGameScene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			if (key.getCode().isDigitKey())
 				zMyControl.getUserInput(key.getCode());
@@ -89,14 +90,17 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 				}
 			}
 		});
+		//set Scene
 		zWindow.setScene(zGameScene);
 		zMyControl.getNextUnit();
 	}
 	public void reset() {
+		//cleare all Unit pics;
 		zMyGroup.getChildren().clear();
 	}
 
 	public void createUnitUpdate(int pValueX, int pValueY, boolean pIsBackground) {
+		//erstelleUnitPicture (später benötigen wir ein ImageVault und müssen das so zuordnen;
 		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY  * 30 + 17.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);

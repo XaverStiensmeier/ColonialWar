@@ -1,5 +1,7 @@
 import javafx.scene.shape.Rectangle;
-
+/*
+ * Pair ist eine Wrapper-Class (Verbindungs Klasse) um Units mit einem Int wert zu versehen. Der Int Wert steht für das Feld und die Unit für die Unit UDONTSAY
+ */
 public class Pair {
   //
   private int zFirst; //was für ein Feld ?

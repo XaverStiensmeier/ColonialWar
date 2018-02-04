@@ -1,5 +1,9 @@
 public class Unit {
-  //Unit ist die Oberklasse für alle Einheiten. Es beschreibt die generellen Möglichkeiten (Züge usw)
+  /* 
+   * 
+   * Unit ist die Oberklasse für alle Einheiten. Es beschreibt die generellen Möglichkeiten (Züge usw)
+   * benötigt Namen bzw. Key für Bild Zuweisung später.
+   */
   private int zMoveEnergy = 2;
   private int zATK = 1;
   private int zDEF = 1;

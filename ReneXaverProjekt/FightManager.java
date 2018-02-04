@@ -1,4 +1,8 @@
-
+/*
+ * Alle Kampf Berechnungen werden hier ausgeführt.
+ * Alle ? Ja Alle!
+ * Rückgabe ist bei Einheit Gewinn per boolean (Angreifende Einheit gewonnen?)
+ *  */
 public class FightManager {
 	public boolean inFight(Unit pUnit1, Unit pUnit2)
 	  {

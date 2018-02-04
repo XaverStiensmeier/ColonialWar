@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * Player ist die Verwaltungseinheit der Units für die Spieler. Dazu wird eine Liste erstellt
+ * sie regelt, welche Einheit die nächste ist.
+ */
 public class Player {
 	List<Unit> zUnitList = new ArrayList<Unit>();
 	int zCurrentUnitIndex=0;
