@@ -92,7 +92,6 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		});
 		//set Scene
 		zWindow.setScene(zGameScene);
-		zMyControl.getNextUnit();
 	}
 	public void reset() {
 		//cleare all Unit pics;

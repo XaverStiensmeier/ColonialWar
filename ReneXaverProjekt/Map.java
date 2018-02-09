@@ -36,6 +36,7 @@ public class Map {
 	public void removeUnit(int pFromX, int pFromY) {
 		//entfernt eine Uni aus dem Pair an der Stelle pFromX pFromY
 		larrayMap[pFromX][pFromY].setSecond(null);
+		//System.out.print("(" + pFromX + ")(" + pFromY + ")0");
 	}
 
 	public boolean moveUnit(int pToX, int pToY, int pFromX, int pFromY, Unit pUnit) {
@@ -70,15 +71,19 @@ public class Map {
 		return larrayMap.length;
 	}
     public String toString() {
-    	String lMyString = "";
+    	String lMyString = "MapPosUnits1:";
+    	int counter = 0;
     	for (int x = 0; x < larrayMap.length; x++) {
 			for (int y = 0; y < larrayMap.length; y++) {
 				// sage dem Server er soll dem Client sagen, dass er der
 				// ClientGUI sage soll: schreibe SpielMaterialFeld
-				lMyString = lMyString+larrayMap[x][y] +" , ("+x+","+y+");";
+				if(larrayMap[x][y].getSecond() != null) {
+				lMyString = lMyString + " (" + larrayMap[x][y].getSecond().getXPosition() + " ' " + larrayMap[x][y].getSecond().getYPosition() + ")";
+				counter++;
+				}
 			} 
 		}
-    	return lMyString;
+    	return lMyString +" UNITS:" + counter;
     }
 	
 }

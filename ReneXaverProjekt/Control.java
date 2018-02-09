@@ -11,7 +11,7 @@ public class Control {
 	Player zPlayer2 = new Player();
 	Player zCurrentPlayer = zPlayer1;
 	Unit zCurrentUnit;
-	Rectangle test = new Rectangle(5, 5, 5, 5);
+	//Rectangle test = new Rectangle(5, 5, 5, 5);
 	FightManager zCurrentFightManager = new FightManager();
 	// ColonialWarServer zCurrentServer;
 	/*
@@ -72,7 +72,7 @@ public class Control {
 				move(zCurrentUnit.getXPosition() - 1, zCurrentUnit.getYPosition());
 				break;
 			case NUMPAD5:
-				/* führe einen Schuß aus ; */ break;
+				/* führe einen Schuß aus ; */ System.out.println(zCurrentMap + "\n" + zCurrentPlayer); break;
 			case NUMPAD6:
 				move(zCurrentUnit.getXPosition() + 1, zCurrentUnit.getYPosition());
 				break;
@@ -86,7 +86,7 @@ public class Control {
 				move(zCurrentUnit.getXPosition() + 1, zCurrentUnit.getYPosition() - 1);
 				break;
 			case NUMPAD0:
-				zCurrentUnit = this.getNextUnit();
+				this.getNextUnit();
 				break;
 			}
 		}
@@ -98,53 +98,75 @@ public class Control {
 		 * (pair.isEmpty ODER Kampf gewonnen); DANN mache deinen Zug MoveEnergy
 		 * -1; Falls Kampf Verloren und nicht leer
 		 */
+		//System.out.print("OUPS");
 		int lOldX = zCurrentUnit.getXPosition();
 		int lOldY = zCurrentUnit.getYPosition();
 		Pair zPair = zCurrentMap.getPair(pToX, pToY);
-		if (zPair != null && zPair.isEmpty()) {
+		if(zPair != null) {
+		if (zPair.isEmpty()) {
 			//wenn kein Kampf notwendig, da Material-Feld frei und in Map;
 			if (zCurrentMap.moveUnit(pToX, pToY, lOldX, lOldY, zCurrentUnit)) {
 				//Zug hat funktioniert; Passe Werte der Unit an;
 				zCurrentUnit.setMoveEnergy(zCurrentUnit.getMoveEnergy() - 1);
 				zCurrentUnit.setXPosition(pToX);
 				zCurrentUnit.setYPosition(pToY);
-				if (zCurrentUnit.getMoveEnergy() == 0)
-					getNextUnit();
 			} else {
 				// wenn zCurrentUnit = null oder Zug außerhalb des Spielfelds
 			}
 		//funktioniert noch nicht richtig :)
-		} else if (zPair != null && zCurrentFightManager.inFight(zCurrentMap.getPair(lOldX, lOldY).getSecond(), zPair.getSecond())) {
-			// zCurrentMap.removeUnit(lOldX, lOldY);
+		} else if (zCurrentFightManager.inFight(zCurrentMap.getPair(lOldX, lOldY).getSecond(), zPair.getSecond())) {
+			//gewonnener Kampf :)
+			//zCurrentMap.removeUnit(pToX, pToY);
+			//zCurrentMap.moveUnit(pToX, pToY, lOldX, lOldY, zCurrentUnit);
+		}
+		else {
+			//verlorener Kampf :(
+			//zCurrentMap.removeUnit(lOldX, lOldY);
+		}
+		if (zCurrentUnit.getMoveEnergy() == 0)
 			getNextUnit();
 		}
+			
 		createMapView(false);
 	}
 
-	public Unit getNextUnit() {
-		if (!zCurrentPlayer.hasAccess()) {
+	public void getNextUnit() {
+		//aufpassen: Fall, dass einer keine Armee mehr hat ist noch nicht implementiert! Das muss noch geklärt werden
+		//aus irgendwelchen Gründen erhält es einen Aufruf am Anfang warum =?
+		System.out.println("NEXT");
+		if (zCurrentPlayer.hasAccess()) {
+			System.out.println("TING GOES SKRAA");
+			zCurrentUnit = zCurrentPlayer.getNext();
+		}
+		else if (!zCurrentPlayer.hasAccess()) {
 			if (zPlayer2.equals(zCurrentPlayer)) {
 				zCurrentPlayer = zPlayer1;
+				System.out.print("PLAYA1");
+				zCurrentPlayer.setCurrentUnitIndex(0);
+				zCurrentUnit =  zCurrentPlayer.getFirst();
 			} else {
 				zCurrentPlayer = zPlayer2;
+				zCurrentPlayer.setCurrentUnitIndex(0);
+				zCurrentUnit = zCurrentPlayer.getFirst();
+				System.out.println("PL>2");
 			}
 		}
-
-		if (zCurrentPlayer.hasAccess())
-			return zCurrentPlayer.getNext();
-		return null;
+		else
+			System.out.println("ERROR");
+			//error condition
+			
 	}
 
 	public void lineSetUp() {
 		int lsize = zCurrentMap.getLarrayMapLength();
 		for (int i = 0; i < lsize; i++) {
 			Unit one = new Unit(30, 1, 1, i, 0);
-			Unit two = new Unit(30, 1, 1, i, 0);
+			Unit two = new Unit(30, 1, 1, i, lsize -1);
 			zPlayer1.addUnit(one);
 			zPlayer2.addUnit(two);
 			zCurrentMap.setUnit(i, 0, one);
 			zCurrentMap.setUnit(i, lsize - 1, two);
 		}
-		zCurrentUnit = getNextUnit();
+		zCurrentUnit = zCurrentPlayer.getFirst();
 	}
 }
