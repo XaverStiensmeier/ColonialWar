@@ -44,7 +44,7 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		zWindow = primaryStage;
-
+		
 	}
 
 	// When zButton is clicked, handle() gets called
@@ -53,9 +53,8 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	public void handle(ActionEvent event) {
 		if (event.getSource() == zButton) {
 			zMyControl.createMap(10, 10);
-			zMyControl.createMapView(true);
 			zMyControl.lineSetUp();
-			zMyControl.createMapView(false);
+			zMyControl.createMapView();
 			fullUpdate();
 		}
 
@@ -98,14 +97,11 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		zMyGroup.getChildren().clear();
 	}
 
-	public void createUnitUpdate(int pValueX, int pValueY, boolean pIsBackground) {
-		//erstelleUnitPicture (später benötigen wir ein ImageVault und müssen das so zuordnen;
+	public void createPartialUpdate(int pValueX, int pValueY) {
+		//erstellePartialPicture (später benötigen wir ein ImageVault und müssen das so zuordnen);
 		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY  * 30 + 17.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);
-		if(pIsBackground)
-		zMapGroup.getChildren().add(lRect);
-		else
 		zMyGroup.getChildren().add(lRect);
 	}
 }
