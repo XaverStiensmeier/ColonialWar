@@ -15,10 +15,11 @@ import javafx.stage.Stage;
 public class ColonialWarGUI extends Application implements EventHandler<ActionEvent> {
 
 	private Button zButton;
-	private Group zMyGroup = new Group();
+	private Group zUnitGroup = new Group();
 	private Group zMapGroup = new Group();
 	private Stage zWindow;
 	private Scene zGameScene;
+	private int zSize;
 	// behelfs
 	private Control zMyControl = new Control(this);
 
@@ -34,7 +35,6 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		primaryStage.setTitle("Title of zWindow");
 		zButton = new Button();
 		zButton.setText("Hey baby; LineSetUp1");
-
 		// This class will handle the zButton events
 		zButton.setOnAction(this);
 
@@ -44,7 +44,7 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		zWindow = primaryStage;
-		
+
 	}
 
 	// When zButton is clicked, handle() gets called
@@ -52,7 +52,8 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	@Override
 	public void handle(ActionEvent event) {
 		if (event.getSource() == zButton) {
-			zMyControl.createMap(10, 10);
+			zSize = 10;
+			zMyControl.createMap(zSize, zSize);
 			zMyControl.lineSetUp();
 			zMyControl.createMapView();
 			fullUpdate();
@@ -61,7 +62,8 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	}
 
 	public void createGrass(int pValueX, int pValueY) {
-		// erstelle ein Gras Feld 0 und fügt es der zMapGroup (Background Group);
+		// erstelle ein Gras Feld 0 und fügt es der zMapGroup (Background
+		// Group);
 		Rectangle lRect = new Rectangle(pValueX, pValueY, 30, 30);
 		lRect.setFill(Color.TRANSPARENT);
 		lRect.setStroke(Color.BLACK);
@@ -69,12 +71,12 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 	}
 
 	public void fullUpdate() {
-		//setUp GUI
-		//zMapGroup := Background/Map GUI
-		//zMyGroup  := Die Sicht der Units
-		Group zRoot = new Group(zMapGroup, zMyGroup);
+		// setUp GUI
+		// zMapGroup := Background/Map GUI
+		// zMyGroup := Die Sicht der Units
+		Group zRoot = new Group(zMapGroup, zUnitGroup);
 		zGameScene = new Scene(zRoot, 400, 400);
-		//initialise KeyEvent
+		// initialise KeyEvent
 		zGameScene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			if (key.getCode().isDigitKey())
 				zMyControl.getUserInput(key.getCode());
@@ -89,19 +91,21 @@ public class ColonialWarGUI extends Application implements EventHandler<ActionEv
 				}
 			}
 		});
-		//set Scene
+		// set Scene
 		zWindow.setScene(zGameScene);
 	}
+
 	public void reset() {
-		//cleare all Unit pics;
-		zMyGroup.getChildren().clear();
+		// cleare all Unit pics;
+		zUnitGroup.getChildren().clear();
 	}
 
 	public void createPartialUpdate(int pValueX, int pValueY) {
-		//erstellePartialPicture (später benötigen wir ein ImageVault und müssen das so zuordnen);
-		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY  * 30 + 17.5, 15, 15);
+		// erstellePartialPicture (später benötigen wir ein ImageVault und
+		// müssen das so zuordnen);
+		Rectangle lRect = new Rectangle(pValueX * 30 + 17.5, pValueY * 30 + 17.5, 15, 15);
 		lRect.setFill(Color.BLACK);
 		lRect.setStroke(Color.BLACK);
-		zMyGroup.getChildren().add(lRect);
+		zUnitGroup.getChildren().add(lRect);
 	}
 }
