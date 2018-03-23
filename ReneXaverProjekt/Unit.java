@@ -108,6 +108,9 @@ public class Unit {
     //setzt die Variable "zYPosition" zu "pYPosition"
     zYPosition = pYPosition;
   }
+  public void setDefaultValueMoveEnergy() {
+	  setMoveEnergy(2);
+  }
   public String toString() {
     String part1 = "Leben: " + this.zLP + "\nATK: " + this.zATK + "\nDEF: " + this.zDEF;
     if (this.zATK > 0) {
