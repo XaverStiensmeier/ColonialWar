@@ -1,4 +1,4 @@
-import javafx.scene.shape.Rectangle;
+
 /*
  * Map ist die Verwaltungs-Klasse des physisch reellen Teils der Klasse Unit.
  * Intern verwaltet Map ein Pair[][] Array (zweidimensionales Array)
@@ -7,10 +7,10 @@ import javafx.scene.shape.Rectangle;
 public class Map {
 	Pair[][] larrayMap;
 
-	public Map(int pValueX, int pValueY) {
+	public Map(int pMapSizeX, int pMapSizeY) {
 		//erstellt ein Array der größe pValueX pValueY. Außerdem benutzt es einen Landschaftskonstruktor
 		//hier ist es createEmptyMap;
-		larrayMap = new Pair[pValueX][pValueY];
+		larrayMap = new Pair[pMapSizeX][pMapSizeY];
 		createEmptyMap();
 	}
 

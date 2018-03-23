@@ -1,5 +1,5 @@
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
+
 
 public class Control {
 	/*
@@ -91,6 +91,7 @@ public class Control {
 				break;
 			case NUMPAD0:
 				this.getNextUnit();
+				zCurrentPlayer.setzEnergyLeft(true);
 				break;
 			}
 		}
@@ -107,7 +108,7 @@ public class Control {
 		int lOldY = zCurrentUnit.getYPosition();
 		Pair zPair = zCurrentMap.getPair(pToX, pToY);
 		if (zPair != null) {
-			if (zPair.isEmpty()) {
+			if (zPair.isEmpty() && zCurrentUnit.getMoveEnergy() != 0) {
 				// wenn kein Kampf notwendig, da Material-Feld frei und in Map;
 				if (zCurrentMap.moveUnit(pToX, pToY, lOldX, lOldY, zCurrentUnit)) {
 					// Zug hat funktioniert; Passe Werte der Unit an;
@@ -119,7 +120,7 @@ public class Control {
 					// Spielfelds
 				}
 				// funktioniert noch nicht richtig :)
-			} else if (zCurrentFightManager.inFight(zCurrentMap.getPair(lOldX, lOldY).getSecond(), zPair.getSecond())) {
+			} else if (zCurrentFightManager.inFight(zCurrentMap.getPair(lOldX, lOldY).getSecond(), zPair.getSecond()) && zCurrentUnit.getMoveEnergy() != 0) {
 				// gewonnener Kampf :)
 				// zCurrentMap.removeUnit(pToX, pToY);
 				// zCurrentMap.moveUnit(pToX, pToY, lOldX, lOldY, zCurrentUnit);
@@ -127,7 +128,7 @@ public class Control {
 				// verlorener Kampf :(
 				// zCurrentMap.removeUnit(lOldX, lOldY);
 			}
-			if (zCurrentUnit.getMoveEnergy() == 0)
+			if (zCurrentUnit.getMoveEnergy() <= 0)
 				getNextUnit();
 		}
 
@@ -139,23 +140,27 @@ public class Control {
 		// implementiert! Das muss noch geklärt werden
 		// aus irgendwelchen Gründen erhält es einen Aufruf am Anfang warum =?
 		System.out.println("NEXT");
-		if (zCurrentPlayer.hasAccess()) {
-			System.out.println("TING GOES SKRAA");
+		if (zCurrentPlayer.hasAccess())
 			zCurrentUnit = zCurrentPlayer.getNext();
-		} else if (!zCurrentPlayer.hasAccess()) {
+			//System.out.println("access");
+		else if (!zCurrentPlayer.hasAccess() && !zCurrentPlayer.getzEnergyLeft()) {
 			if (zPlayer2.equals(zCurrentPlayer)) {
 				zCurrentPlayer = zPlayer1;
 				System.out.print("PLAYA1");
-				zCurrentPlayer.setCurrentUnitIndex(0);
-				zCurrentUnit = zCurrentPlayer.getFirst();
+				zCurrentPlayer.setzCurrentUnitIndex(0);
+				zCurrentUnit = zCurrentPlayer.getNext();
+				zCurrentPlayer.refreshAllUnitsEnergy();
 			} else {
 				zCurrentPlayer = zPlayer2;
-				zCurrentPlayer.setCurrentUnitIndex(0);
-				zCurrentUnit = zCurrentPlayer.getFirst();
+				zCurrentPlayer.setzCurrentUnitIndex(0);
+				zCurrentUnit = zCurrentPlayer.getNext();
 				System.out.println("PL>2");
+				zCurrentPlayer.refreshAllUnitsEnergy();
 			}
-		} else
-			System.out.println("ERROR");
+		} else {
+			zCurrentPlayer.setzCurrentUnitIndex(0);
+			zCurrentUnit = zCurrentPlayer.getNext();
+		}
 		// error condition
 
 	}
@@ -170,6 +175,6 @@ public class Control {
 			zCurrentMap.setUnit(i, 0, one);
 			zCurrentMap.setUnit(i, lsize - 1, two);
 		}
-		zCurrentUnit = zCurrentPlayer.getFirst();
+		zCurrentUnit = zCurrentPlayer.getNext();
 	}
 }
